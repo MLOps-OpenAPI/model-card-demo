@@ -2,7 +2,7 @@
   "name": "model-card-manager",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mlops-openapi.github.io/model-card-demo",
+  "homepage": "https://MLOPs-OpenAPI.github.io/model-card-demo",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
