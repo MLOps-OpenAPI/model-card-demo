@@ -9,7 +9,7 @@ import Layout from './components/Layout';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/model-card-demo">
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} />
         <Route path="/home" element={<Layout><Home /></Layout>} />
