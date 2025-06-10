@@ -18,7 +18,7 @@ const Home = () => {
       {/* Header */}
       <Row className="align-items-center mb-4">
         <Col xs={2}>
-          <img src="/Logo.png" alt="Logo" className="img-fluid" />
+          <img src="./Logo.png" alt="Logo" className="img-fluid" />
         </Col>
         <Col>
           <h1 className="display-5">AI Model Card Hub</h1>
