@@ -1,0 +1,110 @@
+{
+  "identity_and_basic_information": {
+    "model_name": "MediScan-Classifier",
+    "version": {
+      "name": "v1.3.2",
+      "date": "2025-04-22",
+      "model_difference": "Added support for additional diagnostic categories and retrained with improved annotated data.",
+      "model_difference": "Refined classification layers and improved class balance in training."
+    },
+    "overview": "MediScan-Classifier is a deep learning model for detecting and classifying abnormalities in chest X-ray images, including pneumonia, tuberculosis, and nodules.",
+    "references": "https://mediresearch.org/models/mediscan-classifier",
+    "citation": "Smith, A. et al. (2025). MediScan-Classifier: Automated Chest X-Ray Diagnosis. Journal of Medical AI.",
+    "license": "CC BY-NC-SA 4.0"
+  },
+  "source_and_distribution": {
+    "dataset_name": "NIH ChestX-ray14 + CheXpert",
+    "dataset_link": "https://nihcc.app.box.com/v/ChestXray-NIHCC",
+    "open_source": false,
+    "source_code_url": "https://github.com/mediresearch/mediscan-classifier",
+    "model_origin": "Developed in collaboration with academic radiology departments and medical AI research teams."
+  },
+  "ownership_and_governance": {
+    "owners": [
+      {
+        "name": "Dr. Alice Nguyen",
+        "phone_number": "+1-555-987-6543",
+        "contact": "alice.nguyen@mediresearch.org"
+      }
+    ]
+  },
+  "model_architecture": {
+    "architecture_type": "CNN - DenseNet121 variant",
+    "ontology_and_semantic_maping": {
+      "frameworks": "TensorFlow, Keras",
+      "structured_taxonomies": "ICD-10 disease classification codes",
+      "ontologies": "RadLex",
+      "semantic_models": "Unified Medical Language System (UMLS)",
+      "external_factors": "Guidance from clinical taxonomy used in diagnosis reports"
+    },
+    "input_format": "Grayscale chest X-ray, 1024x1024 resolution, DICOM converted to PNG",
+    "output_format": "Multilabel classification vector with probability scores for 14 conditions",
+    "format": "SavedModel (.pb) and ONNX",
+    "libraries": "TensorFlow 2.12, NumPy, OpenCV, pydicom"
+  },
+  "training_information": {
+    "training_methodology": "Supervised learning with label smoothing, dropout, class reweighting, and medical expert review of labels.",
+    "training_data_overview": "150,000 chest X-ray images from NIH and Stanford, including multi-label annotations for thoracic diseases.",
+    "data_card_link": "https://mediresearch.org/datasets/chex-data-card",
+    "dependencies": "Python 3.9, TensorFlow 2.12, CUDA 11.6, cuDNN 8.4"
+  },
+  "evaluation_and_performance": {
+    "metrics": {
+      "type": "AUC-ROC",
+      "value": 0.92,
+      "description": "Area Under the Curve for disease classification on CheXpert validation set",
+      "confidence_interval": {
+        "lower_bound": 0.91,
+        "upper_bound": 0.93
+      },
+      "decision_thresholds": "0.6 probability threshold for positive diagnosis",
+      "slice": "Male vs Female; Age > 60 vs Age <= 60",
+      "assumptions": "Evaluation set is representative of hospital imaging diversity; assumes frontal X-rays only"
+    },
+    "evaluation_objective": "Assess diagnostic accuracy and consistency with radiologist-level interpretations",
+    "benchmark_standard": "CheXpert competition leaderboard; NIH benchmark scores"
+  },
+  "deployment_and_operations": {
+    "infrastructure_requirements": "Linux VM, NVIDIA GPU (A100 or RTX 3090), 8GB VRAM, DICOM-compatible image handling",
+    "serving_method": "API",
+    "deployment_constraints": "Model does not support lateral chest X-rays; requires normalization to specific pixel spacing",
+    "visibility": "Restricted access for clinical trial partners and approved healthcare institutions"
+  },
+  "limitations_and_constraints": {
+    "known_limitations": [
+      "Cannot interpret lateral chest X-rays",
+      "Reduced accuracy on pediatric cases",
+      "Does not detect cardiomegaly reliably in supine X-rays"
+    ],
+    "performance_tradeoffs": [
+      "Sensitivity prioritized over specificity to minimize missed conditions",
+      "Longer inference time due to multiple augmentations for ensemble averaging"
+    ]
+  },
+  "security_and_risk_assessment": {
+    "security_card_link": "https://mediresearch.org/security/mediscan",
+    "robustness": "Withstands variations in contrast and brightness; fails on non-standard aspect ratios",
+    "confusers": "Often confuses pleural effusion with pulmonary edema in lower quality scans",
+    "adversarial_robustness": "Not tested against adversarial inputs due to clinical safety constraints",
+    "explainability": "Grad-CAM visual heatmaps integrated into the UI for clinical review",
+    "risk": [
+      {
+        "risk_type": ["Misdiagnosis due to poor image quality"],
+        "mitigation_strategy": "Pre-screening DICOM metadata and applying quality assurance filters"
+      },
+      {
+        "risk_type": ["Bias against underrepresented populations"],
+        "mitigation_strategy": "Ongoing audit and reweighting of training data demographics"
+      }
+    ]
+  },
+  "custom_metadata": {
+    "classification": "CUI",
+    "sponsoring_organization": "National Institute of Health AI Research",
+    "development_organization": "MediResearch Consortium",
+    "additional_notes": "Not intended to replace licensed radiologist. Clinical validation ongoing.",
+    "customer_performance_thresholds": "Minimum AUC 0.90 on CheXpert validation for regulatory clearance",
+    "users": "Radiologists, Clinical AI Analysts, Hospital IT Integrators",
+    "use_cases": "Triage assistance in emergency departments, second-opinion analysis in rural clinics"
+  }
+}

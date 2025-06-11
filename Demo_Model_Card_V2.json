@@ -1,0 +1,104 @@
+{
+  "identity_and_basic_information": {
+    "model_name": "VisionNet-X",
+    "version": {
+      "name": "v2.1.0",
+      "date": "2025-05-10",
+      "model_difference": "Improved accuracy on edge cases and optimized model size for deployment on edge devices."
+    },
+    "overview": "VisionNet-X is a convolutional neural network model designed for object detection and classification in real-time video streams.",
+    "references": "https://example.com/visionnetx-documentation",
+    "citation": "Doe, J. (2025). VisionNet-X: An Object Detection Framework. Example AI Lab.",
+    "license": "Apache 2.0"
+  },
+  "source_and_distribution": {
+    "dataset_name": "OpenImages V6",
+    "dataset_link": "https://storage.googleapis.com/openimages/web/index.html",
+    "open_source": true,
+    "source_code_url": "https://github.com/example-org/visionnet-x",
+    "model_origin": "Developed by Example AI Lab for public research and edge computing use cases."
+  },
+  "ownership_and_governance": {
+    "owners": [
+      {
+        "name": "Jane Doe",
+        "phone_number": "+1-555-123-4567",
+        "contact": "jane.doe@example.com"
+      }
+    ]
+  },
+  "model_architecture": {
+    "architecture_type": "CNN - YOLOv7 derived",
+    "ontology_and_semantic_maping": {
+      "frameworks": "PyTorch",
+      "structured_taxonomies": "COCO categories",
+      "ontologies": "None",
+      "semantic_models": "ImageNet-derived hierarchy",
+      "external_factors": "Edge deployment constraints required model simplification"
+    },
+    "input_format": "RGB images, 416x416 pixels",
+    "output_format": "Bounding boxes with class probabilities",
+    "format": "ONNX",
+    "libraries": "torchvision, numpy, opencv-python"
+  },
+  "training_information": {
+    "training_methodology": "Supervised learning with data augmentation, using SGD with momentum and cosine annealing LR schedule.",
+    "training_data_overview": "2.5M labeled images from OpenImages V6, augmented with synthetic variants",
+    "data_card_link": "https://example.com/openimages-datacard",
+    "dependencies": "CUDA 11.8, PyTorch 2.0, cuDNN 8.6"
+  },
+  "evaluation_and_performance": {
+    "metrics": {
+      "type": "mAP@0.5",
+      "value": 0.768,
+      "description": "Mean Average Precision at IoU threshold 0.5 on OpenImages V6 validation set",
+      "confidence_interval": {
+        "lower_bound": 0.754,
+        "upper_bound": 0.782
+      },
+      "decision_thresholds": "0.5 confidence score",
+      "slice": "None",
+      "assumptions": "Validation set is representative of deployment scenarios"
+    },
+    "evaluation_objective": "Ensure real-time inference accuracy and robustness across diverse object types",
+    "benchmark_standard": "OpenImages official evaluation protocol"
+  },
+  "deployment_and_operations": {
+    "infrastructure_requirements": "GPU (NVIDIA T4 or better), Docker runtime, 2GB RAM",
+    "serving_method": "API",
+    "deployment_constraints": "Quantized to INT8 for edge devices, model pruning applied",
+    "visibility": "Publicly hosted API endpoint"
+  },
+  "limitations_and_constraints": {
+    "known_limitations": [
+      "Degraded performance in low-light or occluded scenarios",
+      "Fails to detect very small or partially visible objects"
+    ],
+    "performance_tradeoffs": [
+      "Quantization may reduce classification confidence scores",
+      "Pruned layers reduce generalization capacity"
+    ]
+  },
+  "security_and_risk_assessment": {
+    "security_card_link": "https://example.com/security-card-visionnet",
+    "robustness": "Passed fuzzed image inputs and brightness-variance tests with <5% accuracy drop",
+    "confusers": "Frequently confuses small 'cat' objects with 'fox' in forest backgrounds",
+    "adversarial_robustness": "Tested using FGSM and PGD; model maintains >65% mAP under mild perturbations",
+    "explainability": "Uses Grad-CAM for interpretability of bounding box decisions",
+    "risk": [
+      {
+        "risk_type": ["Bias in detection for underrepresented classes"],
+        "mitigation_strategy": "Rebalanced training set with over-sampling for underrepresented labels"
+      }
+    ]
+  },
+  "custom_metadata": {
+    "classification": "CUI",
+    "sponsoring_organization": "Example National Research Institute",
+    "development_organization": "Example AI Lab",
+    "additional_notes": "Designed for low-power UAV integration",
+    "customer_performance_thresholds": "Must maintain >70% mAP under windy aerial footage with camera jitter",
+    "users": "Edge AI developers, robotics researchers, public safety agencies",
+    "use_cases": "Drone-based object detection, surveillance, smart camera applications"
+  }
+}

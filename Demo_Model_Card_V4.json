@@ -1,0 +1,108 @@
+{
+  "identity_and_basic_information": {
+    "model_name": "CreditScoreAI",
+    "version": {
+      "name": "v2.1.0",
+      "date": "2025-03-18",
+      "model_difference": "Improved handling of thin credit files, integrated new bureau data sources, and tuned feature weights for recent financial behaviors."
+    },
+    "overview": "CreditScoreAI is a machine learning model that predicts the likelihood of loan repayment, helping financial institutions assess credit risk more accurately and inclusively.",
+    "references": "https://finml.org/models/creditscoreai",
+    "citation": "Doe, J. & Patel, R. (2025). CreditScoreAI: Enhancing Risk Evaluation in Financial Lending. FinML Journal.",
+    "license": "Proprietary – Commercial use with license"
+  },
+  "source_and_distribution": {
+    "dataset_name": "Combined Bureau & Alt-Fin Dataset (2023)",
+    "dataset_link": "https://finml.org/datasets/combined-bureau-2023",
+    "open_source": false,
+    "source_code_url": "https://github.com/finml-org/creditscoreai",
+    "model_origin": "Developed internally by FinML Labs in partnership with regional lending institutions and fintechs."
+  },
+  "ownership_and_governance": {
+    "owners": [
+      {
+        "name": "Rajiv Patel",
+        "phone_number": "+1-800-123-4567",
+        "contact": "r.patel@finml.org"
+      }
+    ]
+  },
+  "model_architecture": {
+    "architecture_type": "Gradient Boosted Trees (XGBoost)",
+    "ontology_and_semantic_maping": {
+      "frameworks": "Scikit-learn, XGBoost",
+      "structured_taxonomies": "FICO Credit Score, TransUnion data schema",
+      "ontologies": "Open Financial Ontology (OFO)",
+      "semantic_models": "Loan Default Risk Model v3.1",
+      "external_factors": "Macroeconomic indicators and inflation-adjusted income bands integrated as exogenous variables"
+    },
+    "input_format": "Tabular financial records: JSON or CSV format with preprocessed feature vectors",
+    "output_format": "Risk score from 300 to 850",
+    "format": "Pickle (.pkl), PMML for deployment",
+    "libraries": "XGBoost 1.7, Pandas, NumPy, Scikit-learn 1.4"
+  },
+  "training_information": {
+    "training_methodology": "Supervised learning with class balancing and synthetic sample generation (SMOTE) for underrepresented borrower profiles",
+    "training_data_overview": "5 million anonymized credit and transaction profiles across 3 years from partnered financial institutions and alternative data providers",
+    "data_card_link": "https://finml.org/data/creditscoreai-card",
+    "dependencies": "Python 3.10, Scikit-learn, XGBoost, PostgreSQL for feature storage"
+  },
+  "evaluation_and_performance": {
+    "metrics": {
+      "type": "F1 Score",
+      "value": 0.82,
+      "description": "F1 Score on default vs non-default classification at 12-month horizon",
+      "confidence_interval": {
+        "lower_bound": 0.81,
+        "upper_bound": 0.83
+      },
+      "decision_thresholds": "Score > 620 considered 'Acceptable Risk'",
+      "slice": "Low-income group; First-time credit users",
+      "assumptions": "12-month credit behavior horizon; assumes accurate reporting from bureaus"
+    },
+    "evaluation_objective": "Ensure predictive fairness across demographic groups while maintaining accuracy",
+    "benchmark_standard": "FICO and VantageScore benchmarks on equivalent borrower datasets"
+  },
+  "deployment_and_operations": {
+    "infrastructure_requirements": "Cloud-native with minimum 4 vCPUs, 8GB RAM; PostgreSQL or BigQuery for data backend",
+    "serving_method": "API",
+    "deployment_constraints": "Model requires real-time data access to current bureau info; must be used in regulated environments",
+    "visibility": "Available to authorized financial institutions through API portal with audit logs"
+  },
+  "limitations_and_constraints": {
+    "known_limitations": [
+      "Biases can persist if upstream bureau data is incorrect or incomplete",
+      "Model underperforms for recent immigrants with no credit history"
+    ],
+    "performance_tradeoffs": [
+      "Higher accuracy can reduce interpretability; tradeoff managed using SHAP explanations",
+      "Increased fairness constraints may reduce performance slightly on default prediction"
+    ]
+  },
+  "security_and_risk_assessment": {
+    "security_card_link": "https://finml.org/security/creditscoreai",
+    "robustness": "Stress-tested against synthetic profile manipulation (e.g. fraud injection scenarios)",
+    "confusers": "Model may conflate consistent high small loan usage with high risk if not corrected by payment behavior features",
+    "adversarial_robustness": "Penetration-tested against feature spoofing; input sanitation integrated",
+    "explainability": "Integrated SHAP-based dashboard showing feature attribution for each prediction",
+    "risk": [
+      {
+        "risk_type": ["Discriminatory outcomes across racial or income groups"],
+        "mitigation_strategy": "Regular fairness audits; adversarial reweighting applied during training"
+      },
+      {
+        "risk_type": ["Data leakage from outdated bureau records"],
+        "mitigation_strategy": "Time-bound data validation pipeline with recency filtering"
+      }
+    ]
+  },
+  "custom_metadata": {
+    "classification": "CUI",
+    "sponsoring_organization": "Global Finance Innovation Fund",
+    "development_organization": "FinML Labs",
+    "additional_notes": "Model pending certification from National Financial Algorithm Standards Board",
+    "customer_performance_thresholds": "Min F1 > 0.8; Disparate Impact Ratio must stay within [0.85, 1.15]",
+    "users": "Credit risk analysts, underwriters, fintech credit platforms",
+    "use_cases": "Loan pre-qualification, credit risk assessment, dynamic interest rate adjustment"
+  }
+}
