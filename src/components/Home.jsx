@@ -18,7 +18,7 @@ const Home = () => {
       {/* Header */}
       <Row className="align-items-center mb-4">
         <Col xs={2}>
-          <img src="./Logo.png" alt="Logo" className="img-fluid" />
+          <img src="./Aether.png" alt="Logo" className="img-fluid" />
         </Col>
         <Col>
           <h1 className="display-5">AI Model Card Hub</h1>
@@ -45,14 +45,14 @@ const Home = () => {
       <Row>
         {modelCards.length > 0 ? (
           modelCards.map((card, index) => {
-            const details = card["Model Details"] || {};
+            const details = card["identity_and_basic_information"] || {};
             return (
               <Col md={4} key={index} className="mb-4">
                 <Card>
                   <Card.Body>
-                    <Card.Title>{details.Name || "Untitled Model"}</Card.Title>
+                    <Card.Title>{details.model_name || "Untitled Model"}</Card.Title>
                     <Card.Text>
-                      {details.Overview?.substring(0, 100) || "No description available."}
+                      {details.overview?.substring(0, 100) || "No description available."}
                     </Card.Text>
                     <Button
                       variant="outline-primary"
