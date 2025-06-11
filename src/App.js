@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './components/Home';
 import ModelCardUpload from './components/ModelCardUpload';
 import ModelCardDetail from './components/ModelCardDetail';
-import ModelMarketplace from './components/ModelMarketplace';
-import ModelCardTemplate from './components/ModelCardTemplate'
+import ModelMarketplace from './components/ModelCardLibrary';
+import ModelCardTemplate from './components/ModelCardTemplate';
+import ModelCardEdit from './components/ModelCardEdit';
 import Layout from './components/Layout';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/card/:id" element={<Layout><ModelCardDetail /></Layout>} />
         <Route path="/marketplace" element={<Layout><ModelMarketplace /></Layout>} />
         <Route path="/create" element={<Layout><ModelCardTemplate /></Layout>} />
+        <Route path="/edit/:id" element={<Layout><ModelCardEdit /></Layout>} />
       </Routes>
     </Router>
   );
