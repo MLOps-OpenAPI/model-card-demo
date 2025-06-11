@@ -45,13 +45,16 @@ const ModelCardManager = () => {
           <div className="col-md-4" key={index}>
             <div className="card mb-3">
               <div className="card-body">
-                <h5 className="card-title">{card["Model Details"]?.Name || `Card ${index + 1}`}</h5>
-                <p className="card-text">{card["Model Details"]?.Overview || 'No description available.'}</p>
+                <h5 className="card-title">{card["identity_and_basic_information"]?.model_name || `Card ${index + 1}`}</h5>
+                <p className="card-text">{card["identity_and_basic_information"]?.overview || 'No description available.'}</p>
                 <button className="btn btn-primary me-2" onClick={() => navigate(`/card/${index}`)}>
                   View Full Card
                 </button>
-                <button className='btn btn-danger' onClick={() => handleDelete(index)}>
+                <button className='btn btn-danger me-2' onClick={() => handleDelete(index)}>
                   Delete
+                </button>
+                <button onClick={() => navigate(`/edit/${index}`)} className="btn btn-light btn btn-outline-secondary me-2">
+                  Edit 
                 </button>
               </div>
             </div>
