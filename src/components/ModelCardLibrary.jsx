@@ -18,12 +18,12 @@ const ModelMarketplace = () => {
   };
 
   const filteredCards = modelCards.filter((card) =>
-    card['Model Details']?.Name?.toLowerCase().includes(searchTerm.toLowerCase())
+    card['identity_and_basic_information']?.model_name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div>
-      <h2>Model Marketplace</h2>
+      <h2>Model Card Library</h2>
       <Form className="mb-4">
         <Form.Group controlId="searchBar">
           <Form.Control
@@ -40,13 +40,16 @@ const ModelMarketplace = () => {
           <Col key={index}>
             <Card>
               <Card.Body>
-                <Card.Title>{card['Model Details']?.Name || 'Unnamed Model'}</Card.Title>
-                <Card.Text>{card['Model Details']?.Overview}</Card.Text>
+                <Card.Title>{card['identity_and_basic_information']?.model_name || 'Unnamed Model'}</Card.Title>
+                <Card.Text>{card['identity_and_basic_information']?.overview}</Card.Text>
                 <Button as={Link} to={`/card/${index}`} variant="primary" className="me-2">
-                  View
+                  View Full Card
                 </Button>
-                <Button variant="danger" onClick={() => handleDelete(index)}>
+                <Button variant="danger" onClick={() => handleDelete(index)} className="me-2">
                   Delete
+                </Button>
+                <Button as={Link} to={`/edit/${index}`} variant="btn btn-light btn btn-outline-secondary" className="me-2">
+                  Edit 
                 </Button>
               </Card.Body>
             </Card>
