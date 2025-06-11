@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/modelcardupload">Upload Model Cards</Nav.Link>
-              <Nav.Link as={Link} to="/marketplace">Marketplace</Nav.Link>
+              <Nav.Link as={Link} to="/marketplace">Model Card Library</Nav.Link>
               <Nav.Link as={Link} to="/create">Create Model Card</Nav.Link>
             </Nav>
           </Navbar.Collapse>
