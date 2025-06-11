@@ -36,8 +36,11 @@
       "properties": {
         "owners": {
           "type": "array",
+            "items": {
             "name": { "type": "string", "default": "Name of the model owner" },
+            "phone_number": { "type": "string", "format": "phone-number"},
             "contact": { "type": "string", "format": "email" }
+            }
         }
       }
     },
@@ -63,7 +66,7 @@
       "properties": {
         "training_methodology": { "type": "string", "default": "How was the model trained?" },
         "training_data_overview": { "type": "string", "default": "Overview of the training data" },
-        "data_card_link": { "type": "string", "format": "uri" },
+        "data_card_link": { "type": "string", "format": "uri", "default": "Please provide a link to the data card" },
         "dependencies": { "type": "string", "default": "What are the model dependencies?" }
       }
     },
@@ -79,7 +82,7 @@
             "confidence_interval": {
               "type": "object",
               "properties": {
-                "lower_bound": { "type": "number", "default": "What si the Lower bound?" },
+                "lower_bound": { "type": "number", "default": "What is the Lower bound?" },
                 "upper_bound": { "type": "number", "default": "What is the upper bound?" }
               }
             },
@@ -128,8 +131,8 @@
         "adversarial_robustness": { "type": "string", "default": "The specific vulnerabilities that were tested, assumptions for level of access, tactics used, and results"  },
         "explainability": { "type": "string", "default": "The frameworks used to describe model processing and outputs" },
         "risk": {
-          "type": "array",
-          "risk_type": { "type": "string", "default": "What is the name/type of risk?" },
+          "type": "array", 
+          "risk_type": { "type": "array", "default": "What is the name/type of risk?" },
           "mitigation_strategy": { "type": "string", "default": "Strategy used to address this risk?" }
         }
       }

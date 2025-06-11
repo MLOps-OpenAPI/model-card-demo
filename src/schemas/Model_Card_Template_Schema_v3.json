@@ -16,6 +16,7 @@
           }
         },
         "overview": { "type": "string", "default": "What is the overview of the model?" },
+        "references": {"type": "string", "default": "Links providing more information about the model", "format": "uri"},
         "citation": { "type": "string", "default": "How to cite this model " },
         "license": { "type": "string", "default": "What is the model license for use?" }
       }
@@ -23,41 +24,50 @@
     "source_and_distribution": {
       "type": "object",
       "properties": {
-        "dataset_name": { "type": "string", "default": "What is the name of the dataset(s) used to train the model?" },
+        "dataset_name": { "type": "string", "default": "What is the name of the dataset used to train the model?" },
         "dataset_link": { "type": "string", "format": "uri" },
         "open_source": { "type": "boolean", "description": "Is this model open source","default": "Is this model open source?" },
-        "source_code_url": { "type": "string", "format": "uri" }
+        "source_code_url": { "type": "string", "format": "uri" },
+        "model_origin": {"type": "string", "default": "What is the model origin?"}
       }
     },
     "ownership_and_governance": {
       "type": "object",
       "properties": {
         "owners": {
-          "type": "object",
-          "properties": {
-            "name": { "type": "string", "default": "What is the name of the model?" },
+          "type": "array",
+            "items": {
+            "name": { "type": "string", "default": "Name of the model owner" },
+            "phone_number": { "type": "string", "format": "phone_number"},
             "contact": { "type": "string", "format": "email" }
-          }
+            }
         }
       }
     },
     "model_architecture": {
       "type": "object",
       "properties": {
-        "architecture_type": { "type": "string", "default": "What is the name of the model?" },
-        "framework": { "type": "string", "default": "What is the name of the model?" },
-        "input_format": { "type": "string", "default": "What is the name of the model?" },
-        "output_format": { "type": "string", "default": "What is the name of the model?" },
-        "format": { "type": "string", "default": "What is the name of the model?" }
+        "architecture_type": { "type": "string", "default": "Architecture of the model" },
+        "ontology_and_semantic_maping": { 
+          "frameworks": {"type": "string", "default": "What frameworks?" },
+          "structured_taxonomies": {"type": "string", "default": "Specify any structured taxonomies"},
+          "ontologies": {"type": "string", "default": "Specify any structured taxonomies"},
+          "semantic_models": {"type": "string", "default": "Specify any structured taxonomies"},
+          "external_factors": {"type": "string", "default": "Specify any external factors that influenced classification, describe their integration within the ontology. If none, leave blank"}
+      },
+        "input_format": { "type": "string", "default": "The data format for inputs to the model" },
+        "output_format": { "type": "string", "default": "The data format for outputs from the model" },
+        "format": { "type": "string", "default": "Format of the Model itself" },
+        "libraries": {"type": "string", "default": "Information of the libraries used when builidng the model"}
       }
     },
     "training_information": {
       "type": "object",
       "properties": {
-        "training_methodology": { "type": "string", "default": "What is the name of the model?" },
-        "training_data_overview": { "type": "string", "default": "What is the name of the model?" },
-        "data_card_link": { "type": "string", "format": "uri" },
-        "dependencies": { "type": "string", "default": "What is the name of the model?" }
+        "training_methodology": { "type": "string", "default": "How was the model trained?" },
+        "training_data_overview": { "type": "string", "default": "Overview of the training data" },
+        "data_card_link": { "type": "string", "format": "uri", "default": "Please provide a link to the data card" },
+        "dependencies": { "type": "string", "default": "What are the model dependencies?" }
       }
     },
     "evaluation_and_performance": {
@@ -66,35 +76,37 @@
         "metrics": {
           "type": "object",
           "properties": {
-            "type": { "type": "string", "default": "What is the name of the model?" },
-            "value": { "type": "number", "default": "What is the name of the model?" },
+            "type": { "type": "string", "default": "Which performance measure?" },
+            "value": { "type": "number", "default": "Value of the metric?" },
+            "description": {"type": "string", "default": "Method, or other relative information"},
             "confidence_interval": {
               "type": "object",
               "properties": {
-                "lower_bound": { "type": "number", "default": "What is the name of the model?" },
-                "upper_bound": { "type": "number", "default": "What is the name of the model?" }
+                "lower_bound": { "type": "number", "default": "What is the Lower bound?" },
+                "upper_bound": { "type": "number", "default": "What is the upper bound?" }
               }
             },
-            "threshold": { "type": "string", "default": "What is the name of the model?" },
-            "slice": { "type": "string", "default": "What is the name of the model?" }
+            "decision_thresholds": { "type": "string", "default": "The decision threshold the metric was computed on" },
+            "slice": { "type": "string", "default": "The name of the slice this metric was computed on. By default, assume this metric is not sliced." },
+            "assumptions": {"type": "string", "default": "All assumptions made during testing and evaluation"}
           }
         },
-        "evaluation_objective": { "type": "string", "default": "What is the name of the model?" },
-        "benchmark_standard": { "type": "string", "default": "What is the name of the model?" }
+        "evaluation_objective": { "type": "string", "default": "Overall objective of T&E?" },
+        "benchmark_standard": { "type": "string", "default": "What Benchmark standard(s) used" }
       }
     },
     "deployment_and_operations": {
       "type": "object",
       "properties": {
-        "infrastructure_requirements": { "type": "string", "default": "What is the name of the model?" },
+        "infrastructure_requirements": { "type": "string", "default": "What are the deployment dependencies" },
         "serving_method": {
            "type": "string",
            "default": "How will this model be served?",
            "title": "Serving Method",
            "enum": ["API", "Batch Inference", "Etc."]
     },
-        "deployment_constraints": { "type": "string", "default": "What is the name of the model?" },
-        "visibility": { "type": "string", "default": "What is the name of the model?" }
+        "deployment_constraints": { "type": "string", "default": "Wht are the deployment constraints/how is the model optimized?" },
+        "visibility": { "type": "string", "default": "The method to how users can view the model" }
       }
     },
     "limitations_and_constraints": {
@@ -102,11 +114,11 @@
       "properties": {
         "known_limitations": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": { "type": "string", "default": "Known limitations" }
         },
         "performance_tradeoffs": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": { "type": "string", "default": "Known performance tradeoffs" }
         }
       }
     },
@@ -114,11 +126,15 @@
       "type": "object",
       "properties": {
         "security_card_link": { "type": "string", "format": "uri" },
-        "robustness": { "type": "string" },
-        "adversarial_robustness": { "type": "string" },
-        "explainability": { "type": "string" },
-        "risk_type": { "type": "string" },
-        "mitigation_strategy": { "type": "string" }
+        "robustness": { "type": "string", "default": "Data pertubation testing or model performance on novel scenarios" },
+        "confusers": {  "type": "string", "default": "The class of objects that the model consistently mistakes for a different class"  }, 
+        "adversarial_robustness": { "type": "string", "default": "The specific vulnerabilities that were tested, assumptions for level of access, tactics used, and results"  },
+        "explainability": { "type": "string", "default": "The frameworks used to describe model processing and outputs" },
+        "risk": {
+          "type": "array",
+          "risk_type": { "type": "string", "default": "What is the name/type of risk?" },
+          "mitigation_strategy": { "type": "string", "default": "Strategy used to address this risk?" }
+        }
       }
     },
     "custom_metadata": {
