@@ -54,6 +54,9 @@ const ModelCardDetail = () => {
         <button className="btn btn-secondary me-2" onClick={() => navigate(-1)}>
           ← Back
         </button>
+        <button className="btn btn-primary me-2" onClick={() => navigate(`/edit/${id}`)}>
+            Edit
+        </button>
         <button className="btn btn-success" onClick={handleDownload}>
           Download JSON
         </button>
