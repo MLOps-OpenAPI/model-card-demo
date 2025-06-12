@@ -16,7 +16,6 @@ const createEmptyDataFromSchema = (schema) => {
     }
     return obj;
   }
-  
 
   if (schema.type === 'array') return [];
 
@@ -37,7 +36,7 @@ const createEmptyDataFromSchema = (schema) => {
   return null;
 };
 
-function DynamicModelForm() {
+function DynamicModelForm({ initialData = null, onSave, onCancel, onChange, isEdit = false }) {
   const schemaOptions = [
     { label: 'Model Card v1', schema: schemaV1 },
     { label: 'Model Card v2', schema: schemaV2 },
@@ -45,26 +44,24 @@ function DynamicModelForm() {
   ];
 
   const [selectedVersion, setSelectedVersion] = useState(schemaOptions[0]);
-  const [schema, setSchema] = useState(selectedVersion.schema);
-  const [formData, setFormData] = useState(createEmptyDataFromSchema(selectedVersion.schema));
-  const [fileName, setFileName] = useState(selectedVersion.label);
-   useEffect(() => {
-    setSchema(selectedVersion.schema);
-    setFormData(createEmptyDataFromSchema(selectedVersion.schema));
-    setFileName(selectedVersion.label);
-  }, [selectedVersion]);
+  const [schema, setSchema] = useState(schemaOptions[0].schema);
+  const [formData, setFormData] = useState(null);
+  const [fileName, setFileName] = useState(schemaOptions[0].label);
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    setFileName(file.name);
+  useEffect(() => {
+    if (isEdit && initialData) {
+      setFormData(initialData);
+      // Try to infer schema from keys if needed, else fallback
+      setSchema(schemaOptions.find(opt => Object.keys(opt.schema.properties).toString() === Object.keys(initialData).toString())?.schema || schemaOptions[0].schema);
+    } else {
+      setSchema(selectedVersion.schema);
+      setFormData(createEmptyDataFromSchema(selectedVersion.schema));
+      setFileName(selectedVersion.label);
+    }
+  }, [selectedVersion, initialData, isEdit]);
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const json = JSON.parse(event.target.result);
-      setSchema(json);
-      setFormData(createEmptyDataFromSchema(json));
-    };
-    reader.readAsText(file);
+  const notifyChange = () => {
+    if (onChange) onChange();
   };
 
   const handleChange = (path, value) => {
@@ -79,6 +76,7 @@ function DynamicModelForm() {
       obj[keys[keys.length - 1]] = value;
       return newData;
     });
+    notifyChange();
   };
 
   const handleAddArrayItem = (path) => {
@@ -93,6 +91,7 @@ function DynamicModelForm() {
       obj.push('');
       return newData;
     });
+    notifyChange();
   };
 
   const handleRemoveArrayItem = (path, idx) => {
@@ -106,51 +105,43 @@ function DynamicModelForm() {
       obj.splice(idx, 1);
       return newData;
     });
+    notifyChange();
   };
-  <Form.Group className="mb-3">
-  <Form.Label>Select Model Card Version</Form.Label>
-  <Form.Select
-    value={fileName}
-    onChange={(e) => {
-      const selectedName = e.target.value;
-      const selectedSchema = schemaOptions[selectedName];
-      setSchema(selectedSchema);
-      setFormData(createEmptyDataFromSchema(selectedSchema));
-      setFileName(selectedName);
-    }}
-  >
-    <option value="" disabled>Select a version</option>
-    {Object.keys(schemaOptions).map((name) => (
-      <option key={name} value={name}>
-        {name}
-      </option>
-    ))}
-  </Form.Select>
-</Form.Group>
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    setFileName(file.name);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const json = JSON.parse(event.target.result);
+      setSchema(json);
+      setFormData(createEmptyDataFromSchema(json));
+    };
+    reader.readAsText(file);
+  };
 
   const renderField = (key, dataValue, schemaNode, path = '') => {
-  const fullPath = path ? `${path}.${key}` : key;
-  const type = schemaNode?.type;
-  if (!type) return null;
+    const fullPath = path ? `${path}.${key}` : key;
+    const type = schemaNode?.type;
+    if (!type) return null;
 
-  if (schemaNode.enum) {
-    return (
-      <Form.Group key={fullPath} className="mb-3">
-        <Form.Label>{key}</Form.Label>
-        <Form.Select
-          value={dataValue || ''}
-          onChange={(e) => handleChange(fullPath, e.target.value)}
-        >
-          <option value="" disabled>Select an option</option>
-          {schemaNode.enum.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </Form.Select>
-      </Form.Group>
-    );
-  }
+    if (schemaNode.enum) {
+      return (
+        <Form.Group key={fullPath} className="mb-3">
+          <Form.Label>{key}</Form.Label>
+          <Form.Select
+            value={dataValue || ''}
+            onChange={(e) => handleChange(fullPath, e.target.value)}
+          >
+            <option value="" disabled>Select an option</option>
+            {schemaNode.enum.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+      );
+    }
+
     if (type === 'boolean') {
       return (
         <Form.Check
@@ -164,7 +155,6 @@ function DynamicModelForm() {
         />
       );
     }
-    
 
     if (type === 'string') {
       let inputType = 'text';
@@ -215,38 +205,34 @@ function DynamicModelForm() {
       const itemsSchema = schemaNode.items || {};
       const safeArray = Array.isArray(dataValue) ? dataValue : [];
 
-       return (
+      return (
         <Form.Group key={fullPath} className="mb-3">
-        <Form.Label>{key}</Form.Label>
+          <Form.Label>{key}</Form.Label>
           {safeArray.map((item, idx) => (
             <div key={`${fullPath}.${idx}`} className="d-flex align-items-center mb-2">
-            {itemsSchema.type === 'object' ? (
-            <div className="flex-grow-1 border p-2 me-2">
-              {renderFormFields(item, itemsSchema, `${fullPath}.${idx}`)}
+              {itemsSchema.type === 'object' ? (
+                <div className="flex-grow-1 border p-2 me-2">
+                  {renderFormFields(item, itemsSchema, `${fullPath}.${idx}`)}
+                </div>
+              ) : (
+                <Form.Control
+                  type={itemsSchema.type === 'number' ? 'number' : 'text'}
+                  value={item}
+                  onChange={(e) => {
+                    const newVal = itemsSchema.type === 'number' ? Number(e.target.value) : e.target.value;
+                    handleChange(`${fullPath}.${idx}`, newVal);
+                  }}
+                  className="me-2"
+                />
+              )}
+              <Button variant="danger" size="sm" onClick={() => handleRemoveArrayItem(fullPath, idx)}>Remove</Button>
             </div>
-          ) : (
-            <Form.Control
-              type={itemsSchema.type === 'number' ? 'number' : 'text'}
-              value={item}
-              onChange={(e) => {
-                const newVal =
-                  itemsSchema.type === 'number' ? Number(e.target.value) : e.target.value;
-                handleChange(`${fullPath}.${idx}`, newVal);
-              }}
-              className="me-2"
-            />
-          )}
-            <Button variant="danger" size="sm" onClick={() => handleRemoveArrayItem(fullPath, idx)}>
-            Remove
-           </Button>
-            </div>
-           ))}
-             <Button size="sm" onClick={() => handleAddArrayItem(fullPath)}>
-             Add Item
-            </Button>
-            </Form.Group>
-          );
-      }
+          ))}
+          <Button size="sm" onClick={() => handleAddArrayItem(fullPath)}>Add Item</Button>
+        </Form.Group>
+      );
+    }
+
     if (type === 'object') {
       return (
         <Accordion key={fullPath} alwaysOpen>
@@ -257,6 +243,7 @@ function DynamicModelForm() {
         </Accordion>
       );
     }
+
     return null;
   };
 
@@ -268,49 +255,58 @@ function DynamicModelForm() {
     );
   };
 
-  const handleSave = () => {
-    const stored = JSON.parse(localStorage.getItem('modelCards')) || [];
-    localStorage.setItem('modelCards', JSON.stringify([...stored, formData]));
-    alert('Saved!');
+  const handleSaveClick = () => {
+    if (onSave) {
+      onSave(formData);
+    } else {
+      const stored = JSON.parse(localStorage.getItem('modelCards')) || [];
+      localStorage.setItem('modelCards', JSON.stringify([...stored, formData]));
+      alert('Saved!');
+    }
   };
 
   return (
     <Container className="my-4">
-      <h2>Create from JSON Schema</h2>
+      <h2>{isEdit ? 'Edit Model Card' : 'Create from JSON Schema'}</h2>
 
-      {/* Dropdown to select schema version */}
-      <Form.Group className="mb-3">
-        <Form.Label>Select Model Card Schema Version</Form.Label>
-        <Form.Select
-          value={selectedVersion.label}
-          onChange={(e) => {
-            const version = schemaOptions.find((opt) => opt.label === e.target.value);
-            if (version) setSelectedVersion(version);
-          }}
-        >
-          {schemaOptions.map((opt) => (
-            <option key={opt.label} value={opt.label}>
-              {opt.label}
-            </option>
-          ))}
-        </Form.Select>
-      </Form.Group>
+      {!isEdit && (
+        <>
+          <Form.Group className="mb-3">
+            <Form.Label>Select Model Card Schema Version</Form.Label>
+            <Form.Select
+              value={selectedVersion.label}
+              onChange={(e) => {
+                const version = schemaOptions.find((opt) => opt.label === e.target.value);
+                if (version) setSelectedVersion(version);
+              }}
+            >
+              {schemaOptions.map((opt) => (
+                <option key={opt.label} value={opt.label}>{opt.label}</option>
+              ))}
+            </Form.Select>
+          </Form.Group>
 
-      {/* File upload for custom JSON schema */}
-      <Form.Group className="mb-3">
-        <Form.Label>Or Upload Custom JSON Schema</Form.Label>
-        <Form.Control type="file" accept=".json" onChange={handleFileUpload} />
-        {fileName && <div className="mt-2 text-muted">Loaded: {fileName}</div>}
-      </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Or Upload Custom JSON Schema</Form.Label>
+            <Form.Control type="file" accept=".json" onChange={handleFileUpload} />
+            {fileName && <div className="mt-2 text-muted">Loaded: {fileName}</div>}
+          </Form.Group>
+        </>
+      )}
 
-      {/* Render the form */}
       {schema && formData && (
         <>
           <Accordion alwaysOpen>{renderFormFields(formData, schema)}</Accordion>
-
-          <Button className="mt-4" variant="success" onClick={handleSave}>
-            Save Model Card
-          </Button>
+          <div className="mt-4 d-flex gap-2">
+            <Button variant="success" onClick={handleSaveClick}>
+              {isEdit ? 'Update' : 'Save Model Card'}
+            </Button>
+            {isEdit && (
+              <Button variant="secondary" onClick={onCancel}>
+                Cancel
+              </Button>
+            )}
+          </div>
         </>
       )}
     </Container>
