@@ -7,7 +7,15 @@ const Layout = ({ children }) => {
     <>
       <Navbar bg="light" expand="lg" className="mb-4">
         <Container>
-          <Navbar.Brand as={Link} to="/home">AI Model Cards</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/home" className="d-flex align-items-center">
+            <img
+              src="./Aether.png" 
+              width="30"
+              height="30"
+              className="d-inline-block align-top me-2"
+            />
+            æther
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
