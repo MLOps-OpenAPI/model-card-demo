@@ -1,0 +1,76 @@
+<ProductRequirementsDocument>
+    <ProductName>Model/Data Card Web App</ProductName>
+    <Version>MVP v2</Version>
+    <Owner>Aether Team</Owner>
+    <Date>2025-06-17</Date>
+
+    <Overview>
+        This web application allows users to upload, view, and edit model and data cards in JSON format. 
+        The MVP has been developed and is functional, but requires enhancements to improve usability, 
+        collaboration, and integration with GitHub.
+    </Overview>
+
+    <KeyFeaturesAndRequirements>
+        <AuthenticationAuthorization>
+            <Requirement>Use GitHub OAuth for user login.</Requirement>
+            <Requirement>Restrict access to user-specific branches and cards.</Requirement>
+        </AuthenticationAuthorization>
+
+        <BranchManagement>
+            <Requirement>Automatically create a new GitHub branch when a new card is uploaded.</Requirement>
+            <Requirement>Allow users to view the main branch (default schema).</Requirement>
+            <Requirement>Allow users to view their own branches only (no access to others’ branches).</Requirement>
+            <Requirement>Branches selectable via dropdown menu.</Requirement>
+            <Requirement>One branch per card; users can create multiple branches.</Requirement>
+        </BranchManagement>
+
+        <IssueLinking>
+            <Requirement>Automatically create a new GitHub issue alongside the branch when a card is uploaded, and link the issue and branch to the uploading user.</Requirement>
+            <Requirement>Provide a button to redirect to linked GitHub issue for each card.</Requirement>
+        </IssueLinking>
+
+        <CardManagement>
+            <Requirement>Cards must be in JSON format.</Requirement>
+            <Requirement>JSON cards can be viewed in a read-only treeview.</Requirement>
+            <Requirement>JSON cards can be edited in a treeview editor (keys and values only).</Requirement>
+            <Requirement>Users cannot modify the JSON hierarchy in the editor.</Requirement>
+            <Requirement>To change the hierarchy, users must download the JSON, edit it externally, and re-upload the modified file.</Requirement>
+        </CardManagement>
+    </KeyFeaturesAndRequirements>
+
+    <FunctionalRequirements>
+        <Feature>
+            <Name>GitHub Login</Name>
+            <Description>OAuth-based login using GitHub API</Description>
+        </Feature>
+        <Feature>
+            <Name>Upload Card</Name>
+            <Description>Upload JSON file, auto-create branch and issue</Description>
+        </Feature>
+        <Feature>
+            <Name>View Cards</Name>
+            <Description>Treeview (read-only) and editable view</Description>
+        </Feature>
+        <Feature>
+            <Name>Edit Cards</Name>
+            <Description>Modify keys/values only</Description>
+        </Feature>
+        <Feature>
+            <Name>Branch Dropdown</Name>
+            <Description>Select from main or user-specific branches</Description>
+        </Feature>
+        <Feature>
+            <Name>Download/Upload</Name>
+            <Description>Download JSON for external editing and re-upload</Description>
+        </Feature>
+    </FunctionalRequirements>
+
+    <NonFunctionalRequirements>
+        <Requirement>Security: OAuth tokens must be securely stored and managed.</Requirement>
+        <Requirement>Performance: JSON rendering and editing should be responsive for files up to 1MB.</Requirement>
+        <Requirement>Scalability: Support for multiple users and concurrent sessions.</Requirement>
+        <Requirement>Browser Compatibility: Chrome, Firefox, Safari, Edge.</Requirement>
+    </NonFunctionalRequirements>
+</ProductRequirementsDocument>
+
+
