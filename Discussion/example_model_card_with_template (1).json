@@ -1,0 +1,23 @@
+{
+  "validation_profile": "healthcare",
+  "identity": {
+    "model_name": "CardioScanAI",
+    "version": "1.0.0",
+    "overview": "Detects signs of heart failure in chest X-rays using CNNs."
+  },
+  "evaluation": {
+    "metrics": [
+      {
+        "type": "AUROC",
+        "value": 0.965,
+        "slice": "adult_female",
+        "confidence_interval": {
+          "lower_bound": 0.95,
+          "upper_bound": 0.98
+        },
+        "x-assumptions": "De-identified imaging data used across US-based hospitals."
+      }
+    ]
+  },
+  "model_description": "This model contains {chest X-ray data} collected from {regional hospitals} for the purpose of {diagnosing cardiomegaly}."
+}

@@ -1,0 +1,23 @@
+{
+  "validation_profile": "defense",
+  "identity": {
+    "model_name": "ISRClassifierV2",
+    "version": "2.1.0",
+    "overview": "Image classifier for ISR mission support"
+  },
+  "evaluation": {
+    "metrics": [
+      {
+        "type": "accuracy",
+        "value": 0.912,
+        "slice": "rural_daylight",
+        "confidence_interval": {
+          "lower_bound": 0.89,
+          "upper_bound": 0.93
+        },
+        "x-assumptions": "Test data includes EO/IR imagery from UAV platforms."
+      }
+    ]
+  },
+  "model_description": "This model contains {EO/IR drone imagery} collected from {ISR platforms} for the purpose of {object classification in support of tactical operations}."
+}
