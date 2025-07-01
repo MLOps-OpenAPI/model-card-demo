@@ -1,5 +1,5 @@
 {
-  "validation_profile": "defense",
+  "$ref": "base.schema.json",
   "identity": {
     "model_name": "ISRClassifierV2",
     "version": "2.1.0",

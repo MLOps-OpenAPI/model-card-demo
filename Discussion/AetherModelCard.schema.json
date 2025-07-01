@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Aether Model Card Schema",
+  "type": "object",
+  "required": [
+    "identity_and_basic_information",
+    "source_and_distribution",
+    "ownership_and_governance",
+    "model_architecture",
+    "training_information",
+    "evaluation_and_performance",
+    "deployment_and_operations",
+    "limitations_and_constraints",
+    "security_and_risk_assessment"
+  ],
+  "properties": {
+    "identity_and_basic_information": {
+      "type": "object",
+      "properties": {
+        "model_name": { "title": "Model Name", "type": "string", "default": "What is the name of the model?"},
+        "model_description":{
+          "type": "string",
+          "pattern": "^This model contains \\{[^}]+\\} collected from \\{[^}]+\\} for the purpose of \\{[^}]+\\}\\.$",
+          "description": "Must follow the template: 'This model contains {type of data} collected from {source} for the purpose of {intended use}.'",
+          "default": "This model contains {type of data} collected from {source} for the purpose of {intended use}."
+    },
+        "model_type": { "type": "string", "description": "This is the model_type"},
+        "version": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string", "default": "What is the name of the Version?" },
+            "date": { "type": "string", "format": "date" },
+            "model_difference": {"type": "string", "default": "What are the changes in this version?"}
+          }
+        },
+        "overview": { "type": "string", "default": "What is the overview of the model?" },
+        "references": {"type": "string", "default": "Links providing more information about the model", "format": "uri"},
+        "citation": { "type": "string", "default": "How to cite this model " },
+        "license": { "type": "string", "default": "What is the model license for use?" }
+      }
+    },
+    "source_and_distribution": {
+      "type": "object",
+      "properties": {
+        "dataset_name": { "type": "string", "default": "What is the name of the dataset used to train the model?" },
+        "dataset_link": { "type": "string", "format": "uri" },
+        "open_source": { "type": "boolean", "description": "Is this model open source","default": "Is this model open source?" },
+        "source_code_url": { "type": "string", "format": "uri" },
+        "model_origin": {"type": "string", "default": "What is the model origin?"}
+      }
+    },
+    "ownership_and_governance": {
+      "type": "object",
+      "properties": {
+        "owners": {
+          "type": "array",
+            "items": {
+            "name": { "type": "string", "default": "Name of the model owner" },
+            "phone_number": { "type": "string", "format": "phone-number"},
+            "contact": { "type": "string", "format": "email" }
+            }
+        }
+      }
+    },
+    "model_architecture": {
+      "type": "object",
+      "properties": {
+        "architecture_type": { "type": "string", "default": "Architecture of the model" },
+        "ontology_and_semantic_maping": { 
+          "frameworks": {"type": "string", "default": "What frameworks?" },
+          "structured_taxonomies": {"type": "string", "default": "Specify any structured taxonomies"},
+          "ontologies": {"type": "string", "default": "Specify any structured taxonomies"},
+          "semantic_models": {"type": "string", "default": "Specify any structured taxonomies"},
+          "external_factors": {"type": "string", "default": "Specify any external factors that influenced classification, describe their integration within the ontology. If none, leave blank"}
+      },
+        "input_format": { "type": "string", "default": "The data format for inputs to the model" },
+        "output_format": { "type": "string", "default": "The data format for outputs from the model" },
+        "format": { "type": "string", "default": "Format of the Model itself" },
+        "libraries": {"type": "string", "default": "Information of the libraries used when builidng the model"}
+      }
+    },
+    "training_information": {
+      "type": "object",
+      "properties": {
+        "training_methodology": { "type": "string", "default": "How was the model trained?" },
+        "training_data_overview": { "type": "string", "default": "Overview of the training data" },
+        "data_card_link": { "type": "string", "format": "uri", "default": "Please provide a link to the data card" },
+        "dependencies": { "type": "string", "default": "What are the model dependencies?" }
+      }
+    },
+    "evaluation_and_performance": {
+      "type": "object",
+      "properties": {
+        "metrics": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "default": "Which performance measure?" },
+            "value": { "type": "number", "default": "Value of the metric?" },
+            "description": {"type": "string", "default": "Method, or other relative information"},
+            "confidence_interval": {
+              "type": "object",
+              "properties": {
+                "lower_bound": { "type": "number", "default": "What is the Lower bound?" },
+                "upper_bound": { "type": "number", "default": "What is the upper bound?" }
+              }
+            },
+            "decision_thresholds": { "type": "string", "default": "The decision threshold the metric was computed on" },
+            "slice": { "type": "string", "default": "The name of the slice this metric was computed on. By default, assume this metric is not sliced." },
+            "assumptions": {"type": "string", "default": "All assumptions made during testing and evaluation"}
+          }
+        },
+        "evaluation_objective": { "type": "string", "default": "Overall objective of T&E?" },
+        "benchmark_standard": { "type": "string", "default": "What Benchmark standard(s) used" }
+      }
+    },
+    "deployment_and_operations": {
+      "type": "object",
+      "properties": {
+        "infrastructure_requirements": { "type": "string", "default": "What are the deployment dependencies" },
+        "hardware_requirements": { "type": "string", "description": "These are the hardware_requirements."}
+    },
+        "deployment_constraints": { "type": "string", "default": "Wht are the deployment constraints/how is the model optimized?" }
+      }
+    },
+    "limitations_and_constraints": {
+      "type": "object",
+      "properties": {
+        "known_limitations": {
+          "type": "array",
+          "items": { "type": "string", "default": "Known limitations" }
+        },
+        "performance_tradeoffs": {
+          "type": "array",
+          "items": { "type": "string", "default": "Known performance tradeoffs" }
+        },
+        "technical_documentation": { "type": "string", "format": "uri", "description": "Here is a link to the technical_documentation"}
+      }
+    },
+    "security_and_risk_assessment": {
+      "type": "object",
+      "properties": {
+        "security_card_link": { "type": "string", "format": "uri" },
+        "risk": {
+          "type": "array", 
+          "risk_type": { "type": "array", "default": "What is the name/type of risk?" },
+          "mitigation_strategy": { "type": "string", "default": "Strategy used to address this risk?" }
+      }
+    }
+  }
+}
