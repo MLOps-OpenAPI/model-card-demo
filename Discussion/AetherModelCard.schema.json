@@ -18,47 +18,54 @@
       "type": "object",
       "properties": {
         "model_name": { "title": "Model Name", "type": "string", "default": "What is the name of the model?"},
-        "model_description":{
-          "type": "string",
-          "pattern": "^This model contains \\{[^}]+\\} collected from \\{[^}]+\\} for the purpose of \\{[^}]+\\}\\.$",
-          "description": "Must follow the template: 'This model contains {type of data} collected from {source} for the purpose of {intended use}.'",
-          "default": "This model contains {type of data} collected from {source} for the purpose of {intended use}."
-    },
-        "model_type": { "type": "string", "description": "This is the model_type"},
+        "model_type": { "type": "array", "description": "This is the model_type"},
         "version": {
           "type": "object",
           "properties": {
             "name": { "type": "string", "default": "What is the name of the Version?" },
             "date": { "type": "string", "format": "date" },
-            "model_difference": {"type": "string", "default": "What are the changes in this version?"}
+            "model_difference": {"type": "string", "default": "Reasons to upgrade or downgrade the version?"}
           }
         },
-        "overview": { "type": "string", "default": "What is the overview of the model?" },
-        "references": {"type": "string", "default": "Links providing more information about the model", "format": "uri"},
-        "citation": { "type": "string", "default": "How to cite this model " },
-        "license": { "type": "string", "default": "What is the model license for use?" }
+        "overview": { 
+          "type": "string", 
+          "pattern": "^This model contains \\{[^}]+\\} collected from \\{[^}]+\\} for the purpose of \\{[^}]+\\}\\.$",
+          "description": "Must follow the template: 'This model contains {type of data} collected from {source} for the purpose of {intended use}.'",
+          "default": "This model contains {type of data} collected from {source} for the purpose of {intended use}."
+        },
+        "license": { "type": "string", "default": "What is the model license for use?" },
+        "references": {
+          "description": "Links providing more information about the model.",
+          "type": "array",
+          "items": {
+              "type": "string",
+              "format": "uri"}
+              },
+        "citation": { "type": "string", "default": "How to reference this model card"}
       }
     },
     "source_and_distribution": {
       "type": "object",
       "properties": {
-        "dataset_name": { "type": "string", "default": "What is the name of the dataset used to train the model?" },
-        "dataset_link": { "type": "string", "format": "uri" },
+        "data": {
+          "description": "The datasets used to train and evaluate the model.",
+          "type": "object",
+          "properties": {
+            "train": { "$ref": "#/definitions/dataset" },
+            "eval": { "$ref": "#/definitions/dataset" }
+          }
+        },
         "open_source": { "type": "boolean", "description": "Is this model open source","default": "Is this model open source?" },
         "source_code_url": { "type": "string", "format": "uri" },
         "model_origin": {"type": "string", "default": "What is the model origin?"}
-      }
     },
     "ownership_and_governance": {
       "type": "object",
       "properties": {
         "owners": {
+          "description": "The individuals or teams who own the model.",
           "type": "array",
-            "items": {
-            "name": { "type": "string", "default": "Name of the model owner" },
-            "phone_number": { "type": "string", "format": "phone-number"},
-            "contact": { "type": "string", "format": "email" }
-            }
+          "items": {"$ref": "#/definitions/owner"}
         }
       }
     },
@@ -117,8 +124,7 @@
       "type": "object",
       "properties": {
         "infrastructure_requirements": { "type": "string", "default": "What are the deployment dependencies" },
-        "hardware_requirements": { "type": "string", "description": "These are the hardware_requirements."}
-    },
+        "hardware_requirements": { "type": "string", "description": "These are the hardware_requirements."},
         "deployment_constraints": { "type": "string", "default": "Wht are the deployment constraints/how is the model optimized?" }
       }
     },
@@ -145,6 +151,48 @@
           "risk_type": { "type": "array", "default": "What is the name/type of risk?" },
           "mitigation_strategy": { "type": "string", "default": "Strategy used to address this risk?" }
       }
+    },
+    "definitions": {
+    "owner": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The name of the owner.",
+          "type": "string"
+        },
+        "contact": {
+          "description": "The contact information of the owner.",
+          "type": "string"
+        }
+      }
+    },
+    "dataset": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "The name of the dataset.",
+          "type": "string"
+        },
+        "link": {
+          "description": "A link to the dataset.",
+          "type": "string",
+          "format": "uri"
+        },
+        "sensitive": {
+          "description": "Does this dataset contain human or other sensitive data?",
+          "type": "boolean",
+          "const": "True"
+        },
+        "dataset_link": { 
+          "description": "Link to the dataset",
+          "type": "string", 
+          "format": "uri" 
+        }
+      }
+    }
+  }
+}
+    
     }
   }
 }
