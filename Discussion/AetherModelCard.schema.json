@@ -142,7 +142,7 @@
         "technical_documentation": { "type": "string", "format": "uri", "description": "Link to technical documentation" }
       }
     },
-    "security_and_risk_assessment": {
+    "security_and_compliance": {
       "type": "object",
       "properties": {
         "security_card_link": { "type": "string", "format": "uri", "description": "Link to security card" },
@@ -172,7 +172,7 @@
       "properties": {
         "name": { "type": "string", "description": "The name of the dataset." },
         "link": { "type": "string", "format": "uri", "description": "A link to the dataset." },
-        "sensitive": { "type": "boolean", "description": "Does this dataset contain human or other sensitive data?" },
+        "sensitive": { "type": "boolean", "description": "Does this dataset contain human or other sensitive data?", "const": "True" },
         "dataset_link": { "type": "string", "format": "uri", "description": "Link to the dataset" }
       }
     }
